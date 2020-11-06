@@ -6,6 +6,7 @@ const User = require("../../models/User");
 const { check, validationResult } = require("express-validator");
 const config = require("config");
 const request = require("request");
+const Hobbie = require("../../models/Hobbie");
 
 //@route    GET api/profile/me
 //@desc     Get current users profile
@@ -26,7 +27,7 @@ router.get("/me", auth, async (req, res) => {
 });
 
 //@route    POST api/profile/me
-//@desc     Create new hobbie
+//@desc     Create new profile
 //@access   Private
 router.post(
   "/",
@@ -37,13 +38,17 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     const { gender, hobbies, history } = req.body;
 
+    //Convert hobbies array of string to array of Hobbies
+    for (let i = 0; i < hobbies.length; i++) {
+      hobbies[i] = await Hobbie.findOne({ name: hobbies[0] });
+    }
+
     //Build Profile
     const profileFields = {};
     profileFields.user = req.user.id;
     if (gender) profileFields.gender = gender;
     if (history) profileFields.history = history;
-    if (hobbies)
-      profileFields.hobbies = hobbies.split(",").map((skill) => skill.trim());
+    if (hobbies) profileFields.hobbies = hobbies;
     profileFields.contents = [];
     try {
       //   let profile = await Profile.findOne({ user: req.user.id });
@@ -61,7 +66,7 @@ router.post(
       //   await profile.save();
       return res.json(profile);
     } catch (err) {
-      console.error(error.message);
+      console.error(err.message);
       res.status(500).send("Server Error");
     }
   }
@@ -107,8 +112,6 @@ router.get("/user/:user_id", async (req, res) => {
 //@access   Priavte
 router.delete("/", auth, async (req, res) => {
   try {
-    //Remove Posts
-    await Post.deleteMany({ user: req.user.id });
     //Remove Profile
     await Profile.findOneAndRemove({ user: req.user.id });
     //Remove User

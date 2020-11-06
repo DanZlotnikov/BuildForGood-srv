@@ -5,8 +5,10 @@ const ContentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
-  url: {
-    type: String,
+  hobbie: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "hobbie",
+    required: true,
   },
   url: {
     type: String,
