@@ -38,6 +38,7 @@ router.post(
         url: url,
         description: description,
         creator: req.user.id,
+        name: user.name,
         hobbie: hobbieObject,
       });
 
