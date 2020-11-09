@@ -30,9 +30,7 @@ router.post(
 
       const { url, description, hobbie } = req.body;
 
-      const hobbieObject = await Hobbie.findOne({ name: hobbie });
-
-      console.log(user);
+      const hobbieObject = await Hobbie.findOne({ _id: hobbie });
 
       const newContent = new Content({
         url: url,
