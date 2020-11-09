@@ -87,12 +87,12 @@ router.get("/user/:user_id", auth, async (req, res) => {
 //@desc     Get contents by hobbie
 //@access   Private
 
-router.get("/hobbie/:user_id", auth, async (req, res) => {
+router.get("/hobbie/:hobbie_id", auth, async (req, res) => {
   try {
     const contents = await Content.find().sort({ date: -1 });
 
     const result = contents.filter(
-      (content) => content.hobbie == req.params.user_id
+      (content) => content.hobbie == req.params.hobbie_id
     );
 
     res.json(result);
