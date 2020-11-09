@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb+srv://roey123:N6KtgDAK63wxuEn@cluster0.isod4.mongodb.net/<dbname>?retryWrites=true&w=majority",
+    "jwtSecret": "TelAviv123"
+}
