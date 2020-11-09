@@ -131,7 +131,7 @@ router.delete("/:content_id", auth, async (req, res) => {
 //@route    POST api/contents/like/:id
 //@desc     Like a content
 //@access   Private
-router.get("/like/:id", auth, async (req, res) => {
+router.post("/like/:id", auth, async (req, res) => {
   try {
     const content = await Content.findById(req.params.id);
     if (
