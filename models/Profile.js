@@ -5,11 +5,13 @@ const ProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
-  hobbies: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "hobbie",
-    required: true,
-  },
+  hobbies: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "hobbie",
+      required: true,
+    },
+  ],
   contents: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "content",

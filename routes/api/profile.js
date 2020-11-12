@@ -15,7 +15,9 @@ router.get("/me", auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.user.id,
-    }).populate("user", ["name"]);
+    })
+      .populate("user", ["name"])
+      .populate("hobbies");
 
     if (!profile)
       return res.status(400).json({ msg: "There is no profile for this user" });
@@ -26,7 +28,7 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
-//@route    POST api/profile/me
+//@route    POST api/profile
 //@desc     Create new profile
 //@access   Private
 router.post(
@@ -40,7 +42,7 @@ router.post(
 
     //Convert hobbies array of string to array of Hobbies
     for (let i = 0; i < hobbies.length; i++) {
-      hobbies[i] = await Hobbie.findOne({ name: hobbies[0] });
+      hobbies[i] = await Hobbie.findOne({ _id: hobbies[i].toString() });
     }
 
     //Build Profile
@@ -50,6 +52,7 @@ router.post(
     if (history) profileFields.history = history;
     if (hobbies) profileFields.hobbies = hobbies;
     profileFields.contents = [];
+
     try {
       //   let profile = await Profile.findOne({ user: req.user.id });
       //Update profile
@@ -78,7 +81,9 @@ router.post(
 
 router.get("/", async (req, res) => {
   try {
-    const profiles = await Profile.find().populate("user", ["name"]);
+    const profiles = await Profile.find()
+      .populate("user", ["name"])
+      .populate("hobbies");
     res.json(profiles);
   } catch (err) {
     console.error(err.message);
@@ -94,7 +99,9 @@ router.get("/user/:user_id", async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.params.user_id,
-    }).populate("user", ["name"]);
+    })
+      .populate("user", ["name"])
+      .populate("hobbies");
 
     if (!profile) return res.status(400).json({ msg: "Profile not found" });
     res.json(profile);
