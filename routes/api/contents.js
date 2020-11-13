@@ -13,7 +13,6 @@ const User = require("../../models/User");
 router.post(
   "/",
   [
-    auth,
     [
       check("url", "URL is required").not().isEmpty(),
       check("hobbie", "Hobbie is required").not().isEmpty(),
@@ -53,7 +52,7 @@ router.post(
 //@route    GET api/contents
 //@desc     Get all contents
 //@access   Private
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const contents = await Content.find().sort({ date: -1 });
     res.json(contents);
@@ -67,7 +66,7 @@ router.get("/", auth, async (req, res) => {
 //@desc     Get contents by user ID
 //@access   Private
 
-router.get("/user/:user_id", auth, async (req, res) => {
+router.get("/user/:user_id", async (req, res) => {
   try {
     const contents = await Content.find().sort({ date: -1 });
 
@@ -87,7 +86,7 @@ router.get("/user/:user_id", auth, async (req, res) => {
 //@desc     Get contents by hobbie
 //@access   Private
 
-router.get("/hobbie/:hobbie_id", auth, async (req, res) => {
+router.get("/hobbie/:hobbie_id", async (req, res) => {
   try {
     const contents = await Content.find().sort({ date: -1 });
 
@@ -105,7 +104,7 @@ router.get("/hobbie/:hobbie_id", auth, async (req, res) => {
 //@route    DELETE api/contents/:id
 //@desc     Delete a content
 //@access   Priavte
-router.delete("/:content_id", auth, async (req, res) => {
+router.delete("/:content_id", async (req, res) => {
   try {
     // Remove likes and comments
 
@@ -131,7 +130,7 @@ router.delete("/:content_id", auth, async (req, res) => {
 //@route    POST api/contents/like/:id
 //@desc     Like a content
 //@access   Private
-router.post("/like/:id", auth, async (req, res) => {
+router.post("/like/:id", async (req, res) => {
   try {
     const content = await Content.findById(req.params.id);
     if (
@@ -159,7 +158,7 @@ router.post("/like/:id", auth, async (req, res) => {
 //@route    POST api/contents/like/:id
 //@desc     Unlike a content
 //@access   Private
-router.delete("/unlike/:id", auth, async (req, res) => {
+router.delete("/unlike/:id", async (req, res) => {
   try {
     const content = await Content.findById(req.params.id);
     if (
@@ -191,7 +190,7 @@ router.delete("/unlike/:id", auth, async (req, res) => {
 //@access   Private
 router.post(
   "/comment/:id",
-  [auth, [check("text", "Text is required").not().isEmpty()]],
+  [[check("text", "Text is required").not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -222,7 +221,7 @@ router.post(
 // @route    DELETE api/contents/comment/:id/:comment_id
 // @desc     Delete comment
 // @access   Private
-router.delete("/comment/:id/:comment_id", auth, async (req, res) => {
+router.delete("/comment/:id/:comment_id", async (req, res) => {
   try {
     const content = await Content.findById(req.params.id);
 
