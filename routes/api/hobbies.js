@@ -9,7 +9,7 @@ const User = require("../../models/User");
 //@route    GET api/hobbies
 //@desc     Get all hobbies
 //@access   Private
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const hobbies = await Hobbie.find();
     res.json(hobbies);
@@ -25,6 +25,7 @@ router.get("/", async (req, res) => {
 router.post(
   "/",
   [
+    auth,
     [
       check("name", "Name choose is required").not().isEmpty(),
       check("image", "Image choose is required").not().isEmpty(),

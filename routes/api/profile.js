@@ -11,7 +11,7 @@ const Hobbie = require("../../models/Hobbie");
 //@route    GET api/profile/me
 //@desc     Get current users profile
 //@access   Public
-router.get("/me", async (req, res) => {
+router.get("/me", auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.user.id,
@@ -33,7 +33,7 @@ router.get("/me", async (req, res) => {
 //@access   Private
 router.post(
   "/",
-  [[check("hobbies", "Hobbies choose is required").not().isEmpty()]],
+  [auth, [check("hobbies", "Hobbies choose is required").not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())
@@ -117,7 +117,7 @@ router.get("/user/:user_id", async (req, res) => {
 //@route    DELETE api/profile
 //@desc     Delete a profile, user and posts
 //@access   Priavte
-router.delete("/", async (req, res) => {
+router.delete("/", auth, async (req, res) => {
   try {
     //Remove Profile
     await Profile.findOneAndRemove({ user: req.user.id });
