@@ -11,12 +11,12 @@ const Hobbie = require("../../models/Hobbie");
 //@route    GET api/profile/me
 //@desc     Get current users profile
 //@access   Public
-router.get("/me", auth, async (req, res) => {
+router.get("/me", async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.user.id,
     })
-      .populate("user", ["name"])
+      .populate("user", ["name", "image"])
       .populate("hobbies");
 
     if (!profile)
@@ -33,7 +33,7 @@ router.get("/me", auth, async (req, res) => {
 //@access   Private
 router.post(
   "/",
-  [auth, [check("hobbies", "Hobbies choose is required").not().isEmpty()]],
+  [[check("hobbies", "Hobbies choose is required").not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())
@@ -82,7 +82,7 @@ router.post(
 router.get("/", async (req, res) => {
   try {
     const profiles = await Profile.find()
-      .populate("user", ["name"])
+      .populate("user", ["name", "image"])
       .populate("hobbies");
     res.json(profiles);
   } catch (err) {
@@ -100,7 +100,7 @@ router.get("/user/:user_id", async (req, res) => {
     const profile = await Profile.findOne({
       user: req.params.user_id,
     })
-      .populate("user", ["name"])
+      .populate("user", ["name", "image"])
       .populate("hobbies");
 
     if (!profile) return res.status(400).json({ msg: "Profile not found" });
@@ -117,7 +117,7 @@ router.get("/user/:user_id", async (req, res) => {
 //@route    DELETE api/profile
 //@desc     Delete a profile, user and posts
 //@access   Priavte
-router.delete("/", auth, async (req, res) => {
+router.delete("/", async (req, res) => {
   try {
     //Remove Profile
     await Profile.findOneAndRemove({ user: req.user.id });

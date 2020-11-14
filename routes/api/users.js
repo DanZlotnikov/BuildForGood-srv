@@ -23,7 +23,7 @@ router.post(
       return res.status(400).json({ error: error.array() });
     }
 
-    const { name, email, password, image } = req.body;
+    let { name, email, password, image } = req.body;
 
     try {
       // Check if user exits
@@ -38,6 +38,7 @@ router.post(
         name,
         email,
         password,
+        image,
       });
       //  Encrypt password
 
