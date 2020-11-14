@@ -23,7 +23,7 @@ router.post(
       return res.status(400).json({ error: error.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { name, email, password, image } = req.body;
 
     try {
       // Check if user exits
@@ -31,6 +31,9 @@ router.post(
       if (user) {
         return res.status(400).json({ error: [{ msg: "User already exits" }] });
       }
+      if (!image)
+        image =
+          "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
       user = new User({
         name,
         email,
