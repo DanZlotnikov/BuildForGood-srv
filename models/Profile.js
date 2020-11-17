@@ -16,14 +16,22 @@ const ProfileSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: "content",
   },
-  contents: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "content",
-  },
   history: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "content",
   },
+  following: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
+  followers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
   gender: {
     type: String,
   },

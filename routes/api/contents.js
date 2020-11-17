@@ -28,7 +28,7 @@ router.post(
     try {
       const user = await User.findById(req.user.id).populate("user");
 
-      const { url, description, hobbie } = req.body;
+      const { url, description, hobbie, location } = req.body;
 
       const hobbieObject = await Hobbie.findOne({ _id: hobbie });
 
@@ -38,6 +38,7 @@ router.post(
         creator: req.user.id,
         name: user.name,
         hobbie: hobbieObject,
+        location: location,
       });
 
       const content = await newContent.save();
